@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Crypto Payment</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Vazirmatn Font for Persian/Arabic -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a; /* A very dark gray, almost black */
+            color: #e5e7eb; /* Light gray for text */
+            transition: background-color 0.3s;
+        }
+        
+        html[lang="fa"] body, html[lang="ar"] body {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        .hero-gradient {
+            background: radial-gradient(ellipse at top, rgba(29, 78, 216, 0.15), transparent 70%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-active {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        .lang-btn.active {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cart-btn-pop {
+            animation: pop 0.3s ease-out;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Container -->
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <header class="flex items-center justify-between py-6">
+            <a href="#" class="text-4xl">🏦</a>
+            
+            <div class="flex items-center gap-4">
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-1 bg-gray-900/50 p-1 rounded-full">
+                    <button class="lang-btn active px-3 py-1 text-sm rounded-full" data-lang="en">EN</button>
+                    <button class="lang-btn px-3 py-1 text-sm rounded-full" data-lang="fa">FA</button>
+                    <button class="lang-btn px-3 py-1 text-sm rounded-full" data-lang="ar">AR</button>
+                    <button class="lang-btn px-3 py-1 text-sm rounded-full" data-lang="ru">RU</button>
+                    <button class="lang-btn px-3 py-1 text-sm rounded-full" data-lang="de">DE</button>
+                </div>
+                <!-- Cart Button -->
+                <button id="view-cart-btn" class="relative text-gray-300 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Page Content -->
+        <div id="main-page">
+            <!-- Hero Section -->
+            <main class="py-16 md:py-20 hero-gradient">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter text-white leading-tight" data-key="main_title">remix.line</h1>
+                    <p class="mt-6 mx-auto max-w-2xl text-lg text-gray-400" data-key="welcome_message">Hello, We are very happy to work with you. This project provides you with all the access you need to code so that you can use it easily.</p>
+                     <!-- Warning Message -->
+                    <div class="mt-6 bg-red-900/20 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg max-w-md mx-auto flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 flex-shrink-0"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <p class="font-semibold" data-key="private_link_warning">Please do not make this link available to anyone.</p>
+                    </div>
+                    <!-- New Important Notice -->
+                    <div class="mt-6 text-red-400 text-lg max-w-2xl mx-auto space-y-2">
+                        <p data-key="code_usage_notice">All codes are encrypted and integrated. To use these codes, please only use <strong>Java, WordPress, or Python</strong>.</p>
+                        <p data-key="support_email_notice">For troubleshooting, please contact only the email address below:</p>
+                        <a href="mailto:Remixlinepersonal@gmail.com" class="font-semibold text-red-300 hover:text-red-200">Remixlinepersonal@gmail.com</a>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Products Section -->
+            <section id="products" class="py-12 fade-in-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-white" data-key="products_title">Our Services</h2>
+                    <p class="mt-3 text-gray-400" data-key="products_subtitle">Select a service to add it to your cart.</p>
+                </div>
+                <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Products will be injected here by JS -->
+                </div>
+            </section>
+
+             <!-- Final Steps Section -->
+            <section id="final-steps" class="py-12 fade-in-section">
+                <div class="glass-card p-8 rounded-2xl text-center">
+                    <p class="text-lg text-gray-300" data-key="delivery_info">Once your deposit is confirmed, we will send the file and code to your email.</p>
+                    <p class="text-2xl font-bold text-blue-400 my-4" data-key="delivery_time">Estimated delivery time: 5-15 minutes.</p>
+                    <p class="text-gray-400" data-key="assistance_info">If you need any assistance, please contact us at the email below.</p>
+                    <div class="mt-4"><a href="mailto:Remixlinepersonal@gmail.com" class="text-xl font-bold text-blue-400 hover:text-blue-500 transition-colors">Remixlinepersonal@gmail.com</a></div>
+                </div>
+            </section>
+            
+            <!-- Stats Section -->
+            <section id="stats" class="py-12 fade-in-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-white" data-key="stats_title">Our Community in Numbers</h2>
+                </div>
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+                        <!-- Buyers -->
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 mx-auto mb-3 text-blue-400"><path d="M12 2H2v10l9.29 9.29a1 1 0 0 0 1.41 0l9.3-9.3a1 1 0 0 0 0-1.42Z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+                            <p class="text-3xl font-bold text-white">12,000+</p>
+                            <p class="text-gray-400" data-key="buyers_label">Buyers</p>
+                        </div>
+                        <!-- Registered -->
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 mx-auto mb-3 text-blue-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <p class="text-3xl font-bold text-white">20,000+</p>
+                            <p class="text-gray-400" data-key="registered_label">Registered</p>
+                        </div>
+                        <!-- Online -->
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 mx-auto mb-3 text-blue-400"><path d="M12 12c-2 0-5 2-5 5v2h10v-2c0-3-3-5-5-5Z"></path><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4Z"></path><path d="M20.62 18.51a2 2 0 0 0-1.24-3.51c-1.6-.24-3-1-3-2a2 2 0 1 1 4 0c0 .74-.4 1.39-1 1.76"></path><path d="M3.38 18.51a2 2 0 0 1 1.24-3.51c1.6-.24 3-1 3-2a2 2 0 1 0-4 0c0 .74.4 1.39 1 1.76"></path></svg>
+                            <p class="text-3xl font-bold text-white">10,000+</p>
+                            <p class="text-gray-400" data-key="online_label">Online</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Cart Page Content (Initially Hidden) -->
+        <div id="cart-page" class="hidden">
+            <section id="cart-details" class="py-12">
+                <div class="flex items-center justify-between mb-10">
+                     <h2 class="text-3xl font-bold text-white" data-key="cart_title">Your Shopping Cart</h2>
+                     <button id="back-to-shop-btn" class="text-sm text-blue-400 hover:text-blue-300" data-key="back_to_shop">← Back to Shop</button>
+                </div>
+               
+                <div id="cart-items-container" class="space-y-4">
+                    <!-- Cart items will be injected here -->
+                </div>
+
+                 <div id="empty-cart-message" class="text-center py-12 glass-card rounded-2xl hidden">
+                    <p class="text-xl text-gray-400" data-key="empty_cart">Your cart is empty.</p>
+                </div>
+
+                <div id="cart-summary" class="mt-8 text-right">
+                    <p class="text-2xl font-bold text-white">
+                        <span data-key="total_price">Total:</span> <span id="total-price">$0</span>
+                    </p>
+                </div>
+            </section>
+
+             <!-- Checkout process starts when cart is not empty -->
+            <div id="checkout-process">
+                <!-- Registration Section -->
+                <section id="registration" class="py-12 fade-in-section">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold text-white" data-key="step1_title">1. Your Information</h2>
+                        <p class="mt-3 text-gray-400" data-key="step1_subtitle">Please enter your name and email for registration.</p>
+                    </div>
+                    <div class="glass-card p-6 sm:p-8 rounded-2xl max-w-lg mx-auto">
+                        <div class="space-y-6">
+                            <div>
+                                <label for="full_name" class="block text-sm font-medium text-gray-300 mb-2" data-key="full_name_label">Full Name</label>
+                                <input type="text" name="full_name" id="full_name" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2" data-key="email_label">Email Address</label>
+                                <input type="email" name="email" id="email" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="">
+                            </div>
+                            <button type="button" id="save-info-btn" class="w-full bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors font-semibold" data-key="save_info_btn">Save Information</button>
+                        </div>
+                        <div id="info-saved-message" class="hidden mt-4 text-center text-green-400 font-semibold p-3 bg-green-900/20 rounded-lg">
+                           <p data-key="info_saved_success">Your information has been saved successfully!</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Payment Section -->
+                <section id="payment" class="py-12 fade-in-section">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold text-white" data-key="step2_title">2. Select Network & Deposit</h2>
+                        <p class="mt-3 text-gray-400" data-key="step2_subtitle">Choose your desired currency and network for the deposit.</p>
+                    </div>
+                    
+                    <div class="glass-card p-6 sm:p-8 rounded-2xl">
+                        <!-- Tabs -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-6 bg-gray-900/50 p-2 rounded-xl">
+                            <button class="payment-tab tab-active" data-target="trc20">USDT (TRC20)</button>
+                            <button class="payment-tab" data-target="bep20">USDT (BEP20)</button>
+                            <button class="payment-tab" data-target="erc20-usdt">USDT (ERC20)</button>
+                            <button class="payment-tab" data-target="erc20-eth">Ethereum (ETH)</button>
+                            <button class="payment-tab" data-target="btc">Bitcoin (BTC)</button>
+                        </div>
+                        <!-- Content -->
+                        <div class="payment-content-wrapper text-center">
+                           <div id="trc20-content" class="payment-content"><h3 class="text-lg font-semibold text-blue-400 mb-4" data-key="network_tron">Tron Network (TRC20)</h3><div class="flex justify-center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TGSViwK6updAtPAMKxXqPda7m1oGd5ymPr&bgcolor=0a0a0a&color=ffffff&qzone=1" alt="TRC20 QR Code"></div><p class="mt-4 text-sm text-gray-400 break-words" id="trc20-address">TGSViwK6updAtPAMKxXqPda7m1oGd5ymPr</p><button class="copy-btn mt-4 bg-gray-700 text-white px-6 py-2 rounded-full hover:bg-gray-600 transition-colors" data-address="trc20-address" data-key="copy_address_btn">Copy Address</button></div>
+                           <div id="bep20-content" class="payment-content hidden"><h3 class="text-lg font-semibold text-blue-400 mb-4" data-key="network_bsc">Binance Smart Chain (BEP20)</h3><div class="flex justify-center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=0x3f44a274eed3403af08b8188c39294b4f0afa532&bgcolor=0a0a0a&color=ffffff&qzone=1" alt="BEP20 QR Code"></div><p class="mt-4 text-sm text-gray-400 break-words" id="bep20-address">0x3f44a274eed3403af08b8188c39294b4f0afa532</p><button class="copy-btn mt-4 bg-gray-700 text-white px-6 py-2 rounded-full hover:bg-gray-600 transition-colors" data-address="bep20-address" data-key="copy_address_btn">Copy Address</button></div>
+                           <div id="erc20-usdt-content" class="payment-content hidden"><h3 class="text-lg font-semibold text-blue-400 mb-4" data-key="network_eth_usdt">Ethereum Network (ERC20) - For USDT</h3><div class="flex justify-center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=0x3f44a274eed3403af08b8188c39294b4f0afa532&bgcolor=0a0a0a&color=ffffff&qzone=1" alt="ERC20 QR Code"></div><p class="mt-4 text-sm text-gray-400 break-words" id="erc20-usdt-address">0x3f44a274eed3403af08b8188c39294b4f0afa532</p><button class="copy-btn mt-4 bg-gray-700 text-white px-6 py-2 rounded-full hover:bg-gray-600 transition-colors" data-address="erc20-usdt-address" data-key="copy_address_btn">Copy Address</button></div>
+                           <div id="erc20-eth-content" class="payment-content hidden"><h3 class="text-lg font-semibold text-blue-400 mb-4" data-key="network_eth_eth">Ethereum Network (ERC20) - For ETH</h3><div class="flex justify-center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=0x3f44a274eed3403af08b8188c39294b4f0afa532&bgcolor=0a0a0a&color=ffffff&qzone=1" alt="ERC20 QR Code"></div><p class="mt-4 text-sm text-gray-400 break-words" id="erc20-eth-address">0x3f44a274eed3403af08b8188c39294b4f0afa532</p><button class="copy-btn mt-4 bg-gray-700 text-white px-6 py-2 rounded-full hover:bg-gray-600 transition-colors" data-address="erc20-eth-address" data-key="copy_address_btn">Copy Address</button></div>
+                           <div id="btc-content" class="payment-content hidden"><h3 class="text-lg font-semibold text-blue-400 mb-4" data-key="network_btc">Bitcoin Network (BTC)</h3><div class="flex justify-center"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=373torewzsoc3BF9ZQQymri8QsUVDg1Me9&bgcolor=0a0a0a&color=ffffff&qzone=1" alt="BTC QR Code"></div><p class="mt-4 text-sm text-gray-400 break-words" id="btc-address">373torewzsoc3BF9ZQQymri8QsUVDg1Me9</p><button class="copy-btn mt-4 bg-gray-700 text-white px-6 py-2 rounded-full hover:bg-gray-600 transition-colors" data-address="btc-address" data-key="copy_address_btn">Copy Address</button></div>
+                        </div>
+                    </div>
+                    <p class="text-center mt-4 text-yellow-400 text-sm font-semibold" data-key="network_warning">Attention: Make sure to select the correct network in your wallet. Sending to the wrong network may result in the loss of your assets.</p>
+                </section>
+        
+                <!-- Instructions & Support Section -->
+                <section id="instructions" class="py-12 fade-in-section">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold text-white" data-key="step3_title">3. Submit Transaction Info</h2>
+                        <p class="mt-3 text-gray-400" data-key="step3_subtitle">This is the final and most important step.</p>
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl text-center">
+                        <p class="text-lg text-gray-300" data-key="tx_info_instruction_cart">After making the deposit, please send the <strong class="text-yellow-400">Transaction ID (TxID or Hash)</strong> along with your <strong class="text-yellow-400">email address</strong> to the contact below.</p>
+                        <div class="my-6"><a href="mailto:Remixlinepersonal@gmail.com" class="text-2xl font-bold text-blue-400 hover:text-blue-500 transition-colors">Remixlinepersonal@gmail.com</a></div>
+                        <p class="text-gray-400" data-key="order_processing_note">Your order will be processed after the transaction is confirmed on the network. For any questions or support, please contact us at this email.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-8 mt-12 border-t border-gray-800">
+            <p class="text-center text-gray-500" data-key="footer_text">&copy; 2024. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <!-- Add to Cart Notification -->
+    <div id="add-to-cart-notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-lg text-sm font-semibold z-50 opacity-0 transition-opacity duration-300 pointer-events-none">
+        <p data-key="added_to_cart_message">Your service has been added to the cart.</p>
+    </div>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const products = [
+            { id: 1, name: 'remix.cm', price: 50 },
+            { id: 2, name: 'remix', price: 75 },
+            { id: 3, name: 'remix.line', price: 100 },
+            { id: 4, name: 'remix.pro', price: 150 },
+            { id: 5, name: 'remix.pro ns2', price: 200 },
+            { id: 6, name: 'remix.APl List', price: 250 },
+            { id: 7, name: 'remix.CMpro', price: 350 },
+            { id: 8, name: 'remix.full.package', price: 500 },
+            { id: 9, name: 'remix.enterprise', price: 750 },
+            { id: 10, name: 'remix.custom', price: 400 },
+        ];
+
+        const translations = {
+            en: {
+                main_title: "remix.line", welcome_message: "Hello, We are very happy to work with you. This project provides you with all the access you need to code so that you can use it easily.", private_link_warning: "Please do not make this link available to anyone.", code_usage_notice: "All codes are encrypted and integrated. To use these codes, please only use <strong>Java, WordPress, or Python</strong>.", support_email_notice: "For troubleshooting, please contact only the email address below:", products_title: "Our Services", products_subtitle: "Select a service to add it to your cart.", add_to_cart: "Add to Cart", cart_title: "Your Shopping Cart", back_to_shop: "← Back to Shop", empty_cart: "Your cart is empty.", total_price: "Total:", remove_item: "Remove", added_to_cart_message: "Your service has been added to the cart.",
+                step1_title: "1. Your Information", step1_subtitle: "Please enter your name and email for registration.",
+                step2_title: "2. Select Network & Deposit", step2_subtitle: "Choose your desired currency and network for the deposit.",
+                step3_title: "3. Submit Transaction Info", step3_subtitle: "This is the final and most important step.",
+                network_tron: "Tron Network (TRC20)", network_bsc: "Binance Smart Chain (BEP20)", network_eth_usdt: "Ethereum Network (ERC20) - For USDT", network_eth_eth: "Ethereum Network (ERC20) - For ETH", network_btc: "Bitcoin Network (BTC)", copy_address_btn: "Copy Address", copied_text: "Copied!", network_warning: "Attention: Make sure to select the correct network in your wallet. Sending to the wrong network may result in the loss of your assets.",
+                full_name_label: "Full Name", email_label: "Email Address", save_info_btn: "Save Information", info_saved_success: "Your information has been saved successfully!",
+                tx_info_instruction_cart: "After making the deposit, please send the <strong class='text-yellow-400'>Transaction ID (TxID or Hash)</strong> along with your <strong class='text-yellow-400'>email address</strong> to the contact below.", order_processing_note: "Your order will be processed after the transaction is confirmed on the network. For any questions or support, please contact us at this email.",
+                delivery_info: "Once your deposit is confirmed, we will send the file and code to your email.", delivery_time: "Estimated delivery time: 5-15 minutes.", assistance_info: "If you need any assistance, please contact us at the email below.",
+                stats_title: "Our Community in Numbers", buyers_label: "Buyers", registered_label: "Registered", online_label: "Online", footer_text: "© 2024. All rights reserved."
+            },
+            fa: {
+                main_title: "remix.line", welcome_message: "سلام، از همکاری با شما بسیار خوشحالیم. این پروژه تمام دسترسی‌های لازم به کد را در اختیار شما قرار می‌دهد تا بتوانید به راحتی از آن استفاده کنید.", private_link_warning: "لطفا این لینک را در اختیار هیچکس قرار ندهید.", code_usage_notice: "تمامی کدها رمزگذاری شده و یکپارچه هستند. برای استفاده از این کدها، لطفاً فقط از <strong>جاوا، وردپرس یا پایتون</strong> استفاده کنید.", support_email_notice: "برای رفع مشکل، لطفاً فقط با آدرس ایمیل زیر در ارتباط باشید:", products_title: "سرویس‌های ما", products_subtitle: "برای افزودن به سبد خرید، سرویس مورد نظر را انتخاب کنید.", add_to_cart: "افزودن به سبد", cart_title: "سبد خرید شما", back_to_shop: "→ بازگشت به فروشگاه", empty_cart: "سبد خرید شما خالی است.", total_price: "مجموع:", remove_item: "حذف", added_to_cart_message: "سرویس شما به سبد خرید اضافه شد",
+                step1_title: "۱. اطلاعات شما", step1_subtitle: "لطفا نام و ایمیل خود را برای ثبت‌نام وارد کنید.",
+                step2_title: "۲. انتخاب شبکه و واریز", step2_subtitle: "ارز و شبکه مورد نظر خود را برای واریز انتخاب کنید.",
+                step3_title: "۳. ارسال اطلاعات تراکنش", step3_subtitle: "این آخرین و مهم‌ترین مرحله است.",
+                network_tron: "شبکه ترون (TRC20)", network_bsc: "شبکه بایننس اسمارت چین (BEP20)", network_eth_usdt: "شبکه اتریوم (ERC20) - برای تتر", network_eth_eth: "شبکه اتریوم (ERC20) - برای اتریوم", network_btc: "شبکه بیت‌کوین (BTC)", copy_address_btn: "کپی آدرس", copied_text: "کپی شد!", network_warning: "توجه: حتماً شبکه صحیح را در کیف پول خود انتخاب کنید. ارسال به شبکه اشتباه ممکن است منجر به از دست رفتن دارایی شما شود.",
+                full_name_label: "نام و نام خانوادگی", email_label: "آدرس ایمیل", save_info_btn: "ذخیره اطلاعات", info_saved_success: "اطلاعات شما با موفقیت ثبت شد!",
+                tx_info_instruction_cart: "پس از انجام واریزی، لطفاً <strong class='text-yellow-400'>شناسه تراکنش (TxID یا Hash)</strong> را به همراه <strong class='text-yellow-400'>آدرس ایمیل خود</strong> به مخاطب زیر ارسال کنید.", order_processing_note: "سفارش شما پس از تایید تراکنش در شبکه، پردازش خواهد شد. برای هرگونه سوال یا پشتیبانی با همین ایمیل در ارتباط باشید.",
+                delivery_info: "پس از تایید واریزی شما، فایل و کد به ایمیلتان ارسال خواهد شد.", delivery_time: "زمان تخمین-ی تحویل: ۵ تا ۱۵ دقیقه.", assistance_info: "در صورت نیاز به راهنمایی، لطفاً با ایمیل زیر تماس بگیرید.",
+                stats_title: "آمار جامعه ما", buyers_label: "خریداران", registered_label: "ثبت‌نام شده", online_label: "آنلاین", footer_text: "© 2024. تمام حقوق محفوظ است."
+            },
+            ar: {
+                main_title: "remix.line", welcome_message: "أهلاً بك، يسعدنا جداً العمل معك. هذا المشروع يوفر لك كل الوصول الذي تحتاجه للكود لتتمكن من استخدامه بسهولة.", private_link_warning: "يرجى عدم إتاحة هذا الرابط لأي شخص.", code_usage_notice: "جميع الأكواد مشفرة ومتكاملة. لاستخدام هذه الأكواد، يرجى استخدام <strong>Java أو WordPress أو Python</strong> فقط.", support_email_notice: "لحل المشاكل، يرجى التواصل فقط مع عنوان البريد الإلكتروني أدناه:", products_title: "خدماتنا", products_subtitle: "اختر خدمة لإضافتها إلى سلة التسوق الخاصة بك.", add_to_cart: "أضف إلى السلة", cart_title: "سلة التسوق الخاصة بك", back_to_shop: "→ العودة إلى المتجر", empty_cart: "سلة التسوق الخاصة بك فارغة.", total_price: "المجموع:", remove_item: "إزالة", added_to_cart_message: "تمت إضافة خدمتك إلى سلة التسوق.",
+                step1_title: "١. معلوماتك", step1_subtitle: "الرجاء إدخال اسمك وبريدك الإلكتروني للتسجيل.",
+                step2_title: "٢. اختر الشبكة والإيداع", step2_subtitle: "اختر العملة والشبكة المرغوبة للإيداع.",
+                step3_title: "٣. إرسال معلومات المعاملة", step3_subtitle: "هذه هي الخطوة الأخيرة والأكثر أهمية.",
+                network_tron: "شبكة ترون (TRC20)", network_bsc: "شبكة بينانس الذكية (BEP20)", network_eth_usdt: "شبكة إيثريوم (ERC20) - لـ USDT", network_eth_eth: "شبكة إيثريوم (ERC20) - لـ ETH", network_btc: "شبكة بيتكوين (BTC)", copy_address_btn: "نسخ العنوان", copied_text: "تم النسخ!", network_warning: "انتباه: تأكد من اختيار الشبكة الصحيحة في محفظتك. الإرسال إلى شبكة خاطئة قد يؤدي إلى فقدان أصولك.",
+                full_name_label: "الاسم الكامل", email_label: "عنوان البريد الإلكتروني", save_info_btn: "حفظ المعلومات", info_saved_success: "تم حفظ معلوماتك بنجاح!",
+                tx_info_instruction_cart: "بعد إجراء الإيداع، يرجى إرسال <strong class='text-yellow-400'>معرف المعاملة (TxID أو Hash)</strong> مع <strong class='text-yellow-400'>عنوان بريدك الإلكتروني</strong> إلى جهة الاتصال أدناه.", order_processing_note: "ستتم معالجة طلبك بعد تأكيد المعاملة على الشبكة. لأي أسئلة أو دعم، يرجى الاتصال بنا على هذا البريد الإلكتروني.",
+                delivery_info: "بمجرد تأكيد إيداعك، سنرسل الملف والكود إلى بريدك الإلكتروني.", delivery_time: "وقت التسليم المتوقع: 5-15 دقيقة.", assistance_info: "إذا احتجت إلى أي مساعدة، يرجى الاتصال بنا على البريد الإلكتروني أدناه.",
+                stats_title: "مجتمعنا بالأرقام", buyers_label: "المشترين", registered_label: "المسجلين", online_label: "متصل", footer_text: "© 2024. جميع الحقوق محفوظة."
+            },
+            ru: {
+                main_title: "remix.line", welcome_message: "Здравствуйте, мы очень рады работать с вами. Этот проект предоставляет вам весь необходимый доступ к коду, чтобы вы могли легко его использовать.", private_link_warning: "Пожалуйста, не предоставляйте эту ссылку никому.", code_usage_notice: "Все коды зашифрованы и интегрированы. Для использования этих кодов, пожалуйста, используйте только <strong>Java, WordPress или Python</strong>.", support_email_notice: "Для устранения неполадок, пожалуйста, свяжитесь только по указанному ниже адресу электронной почты:", products_title: "Наши услуги", products_subtitle: "Выберите услугу, чтобы добавить ее в корзину.", add_to_cart: "Добавить в корзину", cart_title: "Ваша корзина", back_to_shop: "← Назад в магазин", empty_cart: "Ваша корзина пуста.", total_price: "Итого:", remove_item: "Удалить", added_to_cart_message: "Ваша услуга была добавлена в корзину.",
+                step1_title: "1. Ваша информация", step1_subtitle: "Пожалуйста, введите ваше имя и адрес электронной почты для регистрации.",
+                step2_title: "2. Выберите сеть и внесите депозит", step2_subtitle: "Выберите желаемую валюту и сеть для депозита.",
+                step3_title: "3. Отправьте информацию о транзакции", step3_subtitle: "Это последний и самый важный шаг.",
+                network_tron: "Сеть Tron (TRC20)", network_bsc: "Binance Smart Chain (BEP20)", network_eth_usdt: "Сеть Ethereum (ERC20) - для USDT", network_eth_eth: "Сеть Ethereum (ERC20) - для ETH", network_btc: "Сеть Bitcoin (BTC)", copy_address_btn: "Копировать адрес", copied_text: "Скопировано!", network_warning: "Внимание: Убедитесь, что вы выбрали правильную сеть в своем кошельке. Отправка на неправильную сеть может привести к потере ваших активов.",
+                full_name_label: "Полное имя", email_label: "Адрес электронной почты", save_info_btn: "Сохранить информацию", info_saved_success: "Ваша информация успешно сохранена!",
+                tx_info_instruction_cart: "После внесения депозита, пожалуйста, отправьте <strong class='text-yellow-400'>ID транзакции (TxID или Hash)</strong> вместе с вашим <strong class='text-yellow-400'>адресом электронной почты</strong> на контактный адрес ниже.", order_processing_note: "Ваш заказ будет обработан после подтверждения транзакции в сети. По любым вопросам или для поддержки, пожалуйста, свяжитесь с нами по этому адресу электронной почты.",
+                delivery_info: "Как только ваш депозит будет подтвержден, мы отправим файл и код на вашу электронную почту.", delivery_time: "Примерное время доставки: 5-15 минут.", assistance_info: "Если вам нужна помощь, пожалуйста, свяжитесь с нами по электронной почте ниже.",
+                stats_title: "Наше сообщество в цифрах", buyers_label: "Покупатели", registered_label: "Зарегистрированные", online_label: "Онлайн", footer_text: "© 2024. Все права защищены."
+            },
+            de: {
+                main_title: "remix.line", welcome_message: "Hallo, wir freuen uns sehr, mit Ihnen zu arbeiten. Dieses Projekt bietet Ihnen den gesamten Zugriff, den Sie auf den Code benötigen, damit Sie ihn einfach verwenden können.", private_link_warning: "Bitte stellen Sie diesen Link niemandem zur Verfügung.", code_usage_notice: "Alle Codes sind verschlüsselt und integriert. Um diese Codes zu verwenden, verwenden Sie bitte nur <strong>Java, WordPress oder Python</strong>.", support_email_notice: "Zur Fehlerbehebung wenden Sie sich bitte nur an die unten angegebene E-Mail-Adresse:", products_title: "Unsere Dienstleistungen", products_subtitle: "Wählen Sie einen Dienst aus, um ihn Ihrem Warenkorb hinzuzufügen.", add_to_cart: "In den Warenkorb", cart_title: "Ihr Warenkorb", back_to_shop: "← Zurück zum Shop", empty_cart: "Ihr Warenkorb ist leer.", total_price: "Gesamt:", remove_item: "Entfernen", added_to_cart_message: "Ihr Dienst wurde dem Warenkorb hinzugefügt.",
+                step1_title: "1. Ihre Informationen", step1_subtitle: "Bitte geben Sie Ihren Namen und Ihre E-Mail-Adresse für die Registrierung ein.",
+                step2_title: "2. Netzwerk auswählen & einzahlen", step2_subtitle: "Wählen Sie Ihre gewünschte Währung und Ihr Netzwerk für die Einzahlung.",
+                step3_title: "3. Transaktionsinfo senden", step3_subtitle: "Dies ist der letzte und wichtigste Schritt.",
+                network_tron: "Tron Netzwerk (TRC20)", network_bsc: "Binance Smart Chain (BEP20)", network_eth_usdt: "Ethereum Netzwerk (ERC20) - für USDT", network_eth_eth: "Ethereum Netzwerk (ERC20) - für ETH", network_btc: "Bitcoin Netzwerk (BTC)", copy_address_btn: "Adresse kopieren", copied_text: "Kopiert!", network_warning: "Achtung: Stellen Sie sicher, dass Sie das richtige Netzwerk in Ihrer Wallet auswählen. Das Senden an das falsche Netzwerk kann zum Verlust Ihrer Vermögenswerte führen.",
+                full_name_label: "Vollständiger Name", email_label: "E-Mail-Adresse", save_info_btn: "Informationen speichern", info_saved_success: "Ihre Informationen wurden erfolgreich gespeichert!",
+                tx_info_instruction_cart: "Nach der Einzahlung senden Sie bitte die <strong class='text-yellow-400'>Transaktions-ID (TxID oder Hash)</strong> zusammen mit Ihrer <strong class='text-yellow-400'>E-Mail-Adresse</strong> an den unten stehenden Kontakt.", order_processing_note: "Ihre Bestellung wird bearbeitet, nachdem die Transaktion im Netzwerk bestätigt wurde. Bei Fragen oder für Unterstützung kontaktieren Sie uns bitte unter dieser E-Mail.",
+                delivery_info: "Sobald Ihre Einzahlung bestätigt ist, senden wir die Datei und den Code an Ihre E-Mail.", delivery_time: "Geschätzte Lieferzeit: 5-15 Minuten.", assistance_info: "Wenn Sie Hilfe benötigen, kontaktieren Sie uns bitte unter der unten stehenden E-Mail.",
+                stats_title: "Unsere Gemeinschaft in Zahlen", buyers_label: "Käufer", registered_label: "Registriert", online_label: "Online", footer_text: "© 2024. Alle Rechte vorbehalten."
+            }
+        };
+
+
+        let cart = [];
+        const mainPage = document.getElementById('main-page');
+        const cartPage = document.getElementById('cart-page');
+        const viewCartBtn = document.getElementById('view-cart-btn');
+        const backToShopBtn = document.getElementById('back-to-shop-btn');
+        const productList = document.getElementById('product-list');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const cartCount = document.getElementById('cart-count');
+        const totalPriceEl = document.getElementById('total-price');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const checkoutProcess = document.getElementById('checkout-process');
+        const saveInfoBtn = document.getElementById('save-info-btn');
+        const infoSavedMessage = document.getElementById('info-saved-message');
+        const fullNameInput = document.getElementById('full_name');
+        const emailInput = document.getElementById('email');
+        const notification = document.getElementById('add-to-cart-notification');
+        let notificationTimeout;
+
+        function showNotification() {
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout);
+            }
+            notification.classList.remove('opacity-0');
+            notificationTimeout = setTimeout(() => {
+                notification.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        function showCartPage() { mainPage.classList.add('hidden'); cartPage.classList.remove('hidden'); updateCartUI(); }
+        function showMainPage() { cartPage.classList.add('hidden'); mainPage.classList.remove('hidden'); }
+
+        viewCartBtn.addEventListener('click', showCartPage);
+        backToShopBtn.addEventListener('click', showMainPage);
+
+        saveInfoBtn.addEventListener('click', () => {
+            const name = fullNameInput.value.trim();
+            const email = emailInput.value.trim();
+
+            if (name && email && /^\S+@\S+\.\S+$/.test(email)) {
+                infoSavedMessage.classList.remove('hidden');
+                setTimeout(() => { infoSavedMessage.classList.add('hidden'); }, 4000);
+            }
+        });
+
+        function renderProducts() {
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const productCard = `<div class="glass-card p-6 rounded-2xl flex flex-col text-center items-center"><h3 class="text-xl font-bold text-white mb-2">${product.name}</h3><p class="text-2xl font-semibold text-blue-400 mb-4">$${product.price}</p><button class="add-to-cart-btn mt-auto bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors w-full" data-id="${product.id}" data-key="add_to_cart">Add to Cart</button></div>`;
+                productList.innerHTML += productCard;
+            });
+            addEventListenersToCartButtons();
+            changeLanguage(document.documentElement.lang || 'en');
+        }
+        
+        function addEventListenersToCartButtons() {
+             document.querySelectorAll('.add-to-cart-btn').forEach(button => button.addEventListener('click', (e) => addToCart(parseInt(e.target.dataset.id))));
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if(product) {
+                cart.push(product);
+                updateCartUI();
+                viewCartBtn.classList.add('cart-btn-pop');
+                setTimeout(() => viewCartBtn.classList.remove('cart-btn-pop'), 300);
+                showNotification();
+            }
+        }
+
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
+
+        function updateCartUI() {
+            cartItemsContainer.innerHTML = '';
+            emptyCartMessage.classList.toggle('hidden', cart.length > 0);
+            checkoutProcess.classList.toggle('hidden', cart.length === 0);
+            
+            if (cart.length > 0) {
+                cart.forEach((item, index) => {
+                    const cartItem = `<div class="glass-card p-4 rounded-lg flex items-center justify-between"><div><h4 class="font-bold text-white">${item.name}</h4><p class="text-sm text-gray-400">$${item.price}</p></div><button class="remove-from-cart-btn text-red-400 hover:text-red-300 text-sm" data-index="${index}" data-key="remove_item">Remove</button></div>`;
+                    cartItemsContainer.innerHTML += cartItem;
+                });
+            }
+
+            totalPriceEl.textContent = `$${cart.reduce((sum, item) => sum + item.price, 0)}`;
+            cartCount.textContent = cart.length;
+
+            document.querySelectorAll('.remove-from-cart-btn').forEach(button => button.addEventListener('click', e => removeFromCart(parseInt(e.target.dataset.index))));
+            changeLanguage(document.documentElement.lang || 'en');
+        }
+
+        function changeLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === 'fa' || lang === 'ar') ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.dataset.key;
+                const translation = translations[lang]?.[key] || translations['en'][key];
+                if (translation) {
+                    if (key.includes('tx_info_instruction') || key.includes('code_usage_notice')) el.innerHTML = translation;
+                    else el.textContent = translation;
+                }
+            });
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+        }
+        
+        document.querySelectorAll('.lang-btn').forEach(button => button.addEventListener('click', (e) => changeLanguage(e.target.dataset.lang)));
+
+        document.querySelectorAll('.payment-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('tab-active'));
+                document.querySelectorAll('.payment-content').forEach(c => c.classList.add('hidden'));
+                tab.classList.add('tab-active');
+                document.getElementById(tab.dataset.target + '-content').classList.remove('hidden');
+            });
+        });
+        
+        function showCopiedMessage(button) {
+            const lang = document.documentElement.lang || 'en';
+            const originalText = translations[lang]?.['copy_address_btn'] || 'Copy Address';
+            const copiedText = translations[lang]?.['copied_text'] || 'Copied!';
+            button.textContent = copiedText;
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }
+
+        function copyToClipboard(text, button) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopiedMessage(button);
+                }).catch(() => {
+                    fallbackCopy(text, button);
+                });
+            } else {
+                fallbackCopy(text, button);
+            }
+        }
+
+        function fallbackCopy(text, button) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '-9999px';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                if (document.execCommand('copy')) {
+                    showCopiedMessage(button);
+                }
+            } catch (err) {
+                 console.error('Fallback copy failed', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const addressText = document.getElementById(button.dataset.address).innerText;
+                copyToClipboard(addressText, button);
+            });
+        });
+
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
+        
+        renderProducts();
+        updateCartUI();
+        changeLanguage('en');
+    });
+    </script>
+</body>
+</html>
+
+
+
